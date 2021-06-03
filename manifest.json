@@ -1,9 +1,9 @@
 {
-  "vendor": "CHANGE_ME",
-  "name": "CHANGE_ME",
-  "version": "0.0.0",
-  "title": "CHANGE_ME",
-  "description": "CHANGE_ME",
+  "vendor": "favric",
+  "name": "speech-to-text",
+  "version": "0.0.1",
+  "title": "Speech to text component",
+  "description": "STT component using google chrome web API",
   "builders": {
     "react": "3.x",
     "messages": "1.x",
