@@ -10,7 +10,7 @@
 
 #### Screenshots or example usage:
 
-<!--- Add some images or gifs to showcase changes in behaviour or layout. Example: before and after images -->
+<!--- Add some Public or gifs to showcase changes in behaviour or layout. Example: before and after Public -->
 
 #### Describe alternatives you've considered, if any.
 

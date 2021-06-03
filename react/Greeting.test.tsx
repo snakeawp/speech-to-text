@@ -1,10 +1,10 @@
 import React from 'react'
 import { render } from '@vtex/test-tools/react'
 
-import Greeting from './Greeting'
+import Speech from './Speech'
 
 test('greets Fred', () => {
-  const { queryByText } = render(<Greeting name="Fred" />)
+  const { queryByText } = render(<Speech name="Fred" />)
 
   expect(queryByText('Hey, Fred')).toBeInTheDocument()
 })
