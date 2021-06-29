@@ -1,10 +1,9 @@
 import {useState, useEffect, useRef} from 'react';
 import Hark from 'hark';
-// @ts-ignore
-import {startRecording, stopRecording} from "./recorderHelpers.js";
+
+import {startRecording, stopRecording} from "./recorderHelpers";
 
 // https://cloud.google.com/speech-to-text/docs/reference/rest/v1/RecognitionConfig
-import {GoogleCloudRecognitionConfig} from './GoogleCloudRecognitionConfig';
 import {UseSpeechToTextTypes} from '../@types/stt';
 import {is_constructor} from "../utils";
 
@@ -39,13 +38,10 @@ if (is_constructor(SpeechRecognition)) {
 export default function useSpeechToText({
                                           continuous,
                                           crossBrowser,
-                                          googleApiKey,
-                                          googleCloudRecognitionConfig,
                                           onStartSpeaking,
                                           onStoppedSpeaking,
                                           speechRecognitionProperties,
                                           timeout,
-                                          useOnlyGoogleCloud = false
                                         }: UseSpeechToTextTypes) {
   const [isRecording, setIsRecording] = useState(false);
 
@@ -67,12 +63,6 @@ export default function useSpeechToText({
       setError('getUserMedia is not supported on this device/browser :(');
     }
 
-    if ((crossBrowser || useOnlyGoogleCloud) && !googleApiKey) {
-      console.error(
-        'No google cloud API key was passed, google API will not be able to process speech'
-      );
-    }
-
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContext();
     }
@@ -83,7 +73,7 @@ export default function useSpeechToText({
   const chromeSpeechRecognition = () => {
     if (recognition) {
       // Continuous recording after stopped speaking event
-      if (continuous) recognition.continuous = true;
+      if (continuous) recognition.continuous = false;
 
       const {grammars, interimResults, lang, maxAlternatives} =
       speechRecognitionProperties || {};
@@ -133,12 +123,12 @@ export default function useSpeechToText({
   };
 
   const startSpeechToText = async () => {
-    if (!useOnlyGoogleCloud && recognition) {
+    if (recognition) {
       chromeSpeechRecognition();
       return;
     }
 
-    if (!crossBrowser && !useOnlyGoogleCloud) {
+    if (!crossBrowser) {
       return;
     }
 
@@ -152,7 +142,6 @@ export default function useSpeechToText({
       errHandler: () => setError('Microphone permission was denied'),
       audioContext: audioContextRef.current as AudioContext
     });
-
     // Stop recording if timeout
     if (timeout) {
       handleRecordingTimeout();
@@ -171,6 +160,7 @@ export default function useSpeechToText({
     });
 
     speechEvents.on('speaking', () => {
+      console.log('speaking')
       if (onStartSpeaking) onStartSpeaking();
 
       // Clear previous recording timeout on every speech event
@@ -178,6 +168,7 @@ export default function useSpeechToText({
     });
 
     speechEvents.on('stopped_speaking', () => {
+      console.log('stopped_speaking')
       if (onStoppedSpeaking) onStoppedSpeaking();
 
       setIsRecording(false);
@@ -187,26 +178,15 @@ export default function useSpeechToText({
       // recording will start again after google cloud api
       // call if `continuous` prop is true. Until the api result
       // returns, technically the microphone is not being captured again
-      stopRecording({
-        exportWAV: true,
-        wavCallback: (blob: any) =>
-          handleBlobToBase64({blob, continuous: continuous || false})
-      });
+      stopRecording();
     });
 
     setIsRecording(true);
   };
 
   const stopSpeechToText = () => {
-    if (recognition && !useOnlyGoogleCloud) {
+    if (recognition) {
       recognition.stop();
-    } else {
-      setIsRecording(false);
-      mediaStream.current?.getAudioTracks()[0].stop();
-      stopRecording({
-        exportWAV: true,
-        wavCallback: (blob: any) => handleBlobToBase64({blob, continuous: false})
-      });
     }
   };
 
@@ -214,70 +194,8 @@ export default function useSpeechToText({
     timeoutId.current = window.setTimeout(() => {
       setIsRecording(false);
       mediaStream.current?.getAudioTracks()[0].stop();
-      stopRecording({exportWAV: false});
+      stopRecording();
     }, timeout);
-  };
-
-  const handleBlobToBase64 = ({
-                                blob,
-                                continuous
-                              }: {
-    blob: Blob;
-    continuous: boolean;
-  }) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-
-    reader.onloadend = async () => {
-      const base64data = reader.result as string;
-
-      let sampleRate = audioContextRef.current?.sampleRate;
-
-      // Google only accepts max 48000 sample rate: if
-      // greater recorder js will down-sample to 48000
-      if (sampleRate && sampleRate > 48000) {
-        sampleRate = 48000;
-      }
-
-      const audio = {content: ''};
-
-      const config: GoogleCloudRecognitionConfig = {
-        encoding: 'LINEAR16',
-        languageCode: 'en-US',
-        sampleRateHertz: sampleRate,
-        ...googleCloudRecognitionConfig
-      };
-
-      const data = {
-        config,
-        audio
-      };
-
-      // Gets raw base 64 string data
-      audio.content = base64data.substr(base64data.indexOf(',') + 1);
-
-      const googleCloudRes = await fetch(
-        `https://speech.googleapis.com/v1/speech:recognize?key=${googleApiKey}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(data)
-        }
-      );
-
-      const googleCloudJson = await googleCloudRes.json();
-
-      // Update results state with transcribed text
-      if (googleCloudJson.results?.length > 0) {
-        setResults((prevResults) => [
-          ...prevResults,
-          googleCloudJson.results[0].alternatives[0].transcript
-        ]);
-      }
-
-      if (continuous) {
-        startSpeechToText();
-      }
-    };
   };
 
   return {
@@ -285,6 +203,7 @@ export default function useSpeechToText({
     interimResult,
     isRecording,
     results,
+    setResults,
     startSpeechToText,
     stopSpeechToText
   };

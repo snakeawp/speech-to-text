@@ -1,5 +1,5 @@
 {
-  "speech": {
+  "speech-to-text": {
     "component": "Speech"
   }
 }

@@ -1,15 +1,10 @@
-import {GoogleCloudRecognitionConfig} from "../Hooks/GoogleCloudRecognitionConfig";
-
 export interface UseSpeechToTextTypes {
   continuous?: boolean;
   crossBrowser?: boolean;
-  googleApiKey?: string;
-  googleCloudRecognitionConfig?: GoogleCloudRecognitionConfig;
   onStartSpeaking?: () => any;
   onStoppedSpeaking?: () => any;
   speechRecognitionProperties?: SpeechRecognitionProperties;
   timeout?: number;
-  useOnlyGoogleCloud?: boolean;
 }
 // https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition
 export interface SpeechRecognitionProperties {
@@ -18,5 +13,15 @@ export interface SpeechRecognitionProperties {
   interimResults?: boolean;
   lang?: string;
   maxAlternatives?: number;
+}
+
+export interface startRecording {
+  audioContext: any;
+  errHandler: any;
+  onStreamLoad?: any;
+}
+export interface stopRecording {
+  exportWAV: any;
+  wavCallback: any;
 }
 

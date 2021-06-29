@@ -1,23 +1,25 @@
 import Recorder from './recorder';
-
-let microphoneStream; // stream from getUserMedia()
-let rec = Recorder; // Recorder.js object
+import {startRecording, stopRecording} from '../@types/stt'
+let microphoneStream: any; // stream from getUserMedia()
+let rec:any = Recorder; // Recorder.js object
 let input; // MediaStreamAudioSourceNode we'll be recording
 
-/**
- *
- * @param {{
- * audioContext: AudioContext
- * errHandler?: () => void
- * onStreamLoad?: () => void
- * }}
- * @returns {Promise<MediaStream>}
- */
+// /**
+//  *
+//  * @param {{
+//  * audioContext: AudioContext
+//  * errHandler?: () => void
+//  * onStreamLoad?: () => void
+//  * }}
+//  * @returns {Promise<MediaStream>}
+//  */
+
+
 export async function startRecording({
                                        audioContext,
                                        errHandler,
                                        onStreamLoad,
-                                     }) {
+                                     }: startRecording): Promise<any> {
   try {
     const stream = await navigator?.mediaDevices.getUserMedia({ audio: true });
 
@@ -46,24 +48,12 @@ export async function startRecording({
   }
 }
 
-/**
- *
- * @param {{
- * exportWAV: boolean
- * wavCallback?: (blob: Blob) => void
- * }}
- */
-export function stopRecording({ exportWAV, wavCallback }) {
+export function stopRecording() {
   // stop recorder.js recording
   rec.stop();
 
   // stop microphone access
   microphoneStream.getAudioTracks()[0].stop();
-
-  // create the wav blob
-  if (exportWAV && wavCallback) {
-    rec.exportWAV((blob) => wavCallback(blob));
-  }
 
   rec.clear();
 }

@@ -16,7 +16,7 @@ h1 {
   font-size: 4rem;
 }
 
-button {
+.button-recording {
   background: #eee;
   border: none;
   cursor: pointer;
@@ -27,14 +27,17 @@ button {
   margin: 10px auto;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.4);
   border-radius: 50%;
+  height: 100px;
+  width: 20px;
 }
-button img {
+
+.button-img {
   border-radius: 50%;
   height: 25px;
   width: 20px;
   margin: 1rem;
 }
-button span {
+.button-recording  span {
   vertical-align: middle;
 }
 
@@ -44,7 +47,7 @@ button span {
 
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0px rgb(218, 18, 18);
+    box-shadow: 0 0 0 0px rgb(181, 181, 181);
   }
   100% {
     box-shadow: 0 0 0 20px rgba(40, 167, 69, 0);
