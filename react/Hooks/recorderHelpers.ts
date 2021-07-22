@@ -1,8 +1,9 @@
-import Recorder from './recorder';
-import {startRecording, stopRecording} from '../@types/stt'
-let microphoneStream: any; // stream from getUserMedia()
-let rec:any = Recorder; // Recorder.js object
-let input; // MediaStreamAudioSourceNode we'll be recording
+import Recorder from './recorder'
+import { StartRecording, StopRecording } from '../@types/stt'
+
+let microphoneStream: any // stream from getUserMedia()
+let rec: any = Recorder // Recorder.js object
+let input // MediaStreamAudioSourceNode we'll be recording
 
 // /**
 //  *
@@ -14,46 +15,45 @@ let input; // MediaStreamAudioSourceNode we'll be recording
 //  * @returns {Promise<MediaStream>}
 //  */
 
-
 export async function startRecording({
-                                       audioContext,
-                                       errHandler,
-                                       onStreamLoad,
-                                     }: startRecording): Promise<any> {
+  audioContext,
+  errHandler,
+  onStreamLoad,
+}: StartRecording): Promise<any> {
   try {
-    const stream = await navigator?.mediaDevices.getUserMedia({ audio: true });
+    const stream = await navigator?.mediaDevices.getUserMedia({ audio: true })
 
     if (onStreamLoad) {
-      onStreamLoad();
+      onStreamLoad()
     }
 
     /*  assign stream for later use  */
-    microphoneStream = stream;
+    microphoneStream = stream
 
     /* use the stream */
-    input = audioContext.createMediaStreamSource(stream);
+    input = audioContext.createMediaStreamSource(stream)
 
-    rec = new Recorder(input);
+    rec = new Recorder(input)
 
     // start the recording process
-    rec.record();
+    rec.record()
 
-    return stream;
+    return stream
   } catch (err) {
-    console.log(err);
+    // console.log(err)
 
     if (errHandler) {
-      errHandler();
+      errHandler()
     }
   }
 }
 
 export function stopRecording() {
   // stop recorder.js recording
-  rec.stop();
+  rec.stop()
 
   // stop microphone access
-  microphoneStream.getAudioTracks()[0].stop();
+  microphoneStream.getAudioTracks()[0].stop()
 
-  rec.clear();
+  rec.clear()
 }
