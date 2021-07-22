@@ -5,7 +5,7 @@ import useSpeechToText from './Hooks';
 import "./Public/styles.css"
 
 
-const CSS_HANDLES = ['audioSearchContainer','audioSearchImg'];
+const CSS_HANDLES = ['audioSearchContainer','audioSearchImg','audioSearchImgRecordingState'];
 
 interface Props {
   lang: string
@@ -13,7 +13,11 @@ interface Props {
   iconWidth: string
   imgSrc: string
 }
-export default function Speech({lang,iconHeight,iconWidth,imgSrc}: Props) {
+export default function Speech({
+                                 lang = 'en-EN',
+                                 iconHeight = '20px',
+                                 iconWidth = '20px',
+                                 imgSrc}: Props) {
 
   const {
     isRecording,
@@ -57,7 +61,7 @@ export default function Speech({lang,iconHeight,iconWidth,imgSrc}: Props) {
       >
         <img data-recording={isRecording}
              src={`${imgSrc}`} alt="recorder-img"
-             className={`${handles.audioSearchImg} ${isRecording ? handles.isRecordingState : ''} pa2 pointer` }
+             className={`${handles.audioSearchImgRecordingState} ${isRecording ? handles.audioSearchImgRecordingState : ''} pa2 pointer` }
              style={{
                height: `${iconHeight}`,
                width:  `${iconWidth}`,
