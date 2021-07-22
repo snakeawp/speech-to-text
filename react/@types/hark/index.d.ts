@@ -2,42 +2,42 @@
 // These types are copied from definitely type + added audioContext option type
 
 declare module 'hark' {
-  export default hark;
+  export default hark
 }
 
 declare function hark(
   stream: MediaStream | undefined,
   option?: hark.Option
-): hark.Harker;
+): hark.Harker
 
 declare namespace hark {
   interface Option {
-    audioContext?: AudioContext;
-    history?: number;
-    interval?: number;
-    play?: boolean;
-    smoothing?: number;
-    threshold?: number;
+    audioContext?: AudioContext
+    history?: number
+    interval?: number
+    play?: boolean
+    smoothing?: number
+    threshold?: number
   }
 
   interface Harker {
-    speaking: boolean;
-    suspend(): Promise<void>;
-    resume(): Promise<void>;
-    readonly state: AudioContextState;
-    setThreshold(t: number): void;
-    setInterval(i: number): void;
-    stop(): void;
-    speakingHistory: number[];
+    speaking: boolean
+    suspend(): Promise<void>
+    resume(): Promise<void>
+    readonly state: AudioContextState
+    setThreshold(t: number): void
+    setInterval(i: number): void
+    stop(): void
+    speakingHistory: number[]
 
-    on(event: 'speaking' | 'stopped_speaking', listener: () => void): void;
+    on(event: 'speaking' | 'stopped_speaking', listener: () => void): void
     on(
       event: 'volume_change',
       listener: (currentVolume: number, threshold: number) => void
-    ): void;
+    ): void
     on(
       event: 'state_change',
       listener: (state: AudioContextState) => void
-    ): void;
+    ): void
   }
 }

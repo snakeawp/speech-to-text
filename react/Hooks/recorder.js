@@ -1,4 +1,4 @@
-import InlineWorker from 'inline-worker';
+import InlineWorker from 'inline-worker'
 
 export class Recorder {
   constructor(source, cfg) {
@@ -6,13 +6,13 @@ export class Recorder {
       bufferLen: 4096,
       numChannels: 1,
       mimeType: 'audio/wav',
-      ...cfg
-    };
-    this.recording = false;
+      ...cfg,
+    }
+    this.recording = false
     this.callbacks = {
-      getBuffer: []
-    };
-    this.context = source.context;
+      getBuffer: [],
+    }
+    this.context = source.context
     this.node = (
       this.context.createScriptProcessor || this.context.createJavaScriptNode
     ).call(
@@ -20,136 +20,151 @@ export class Recorder {
       this.config.bufferLen,
       this.config.numChannels,
       this.config.numChannels
-    );
+    )
 
     this.node.onaudioprocess = (e) => {
-      if (!this.recording) return;
+      if (!this.recording) return
 
-      var buffer = [];
-      for (var channel = 0; channel < this.config.numChannels; channel++) {
-        buffer.push(e.inputBuffer.getChannelData(channel));
+      const buffer = []
+
+      for (let channel = 0; channel < this.config.numChannels; channel++) {
+        buffer.push(e.inputBuffer.getChannelData(channel))
       }
+
       this.worker.postMessage({
         command: 'record',
-        buffer: buffer
-      });
-    };
+        buffer,
+      })
+    }
 
-    source.connect(this.node);
-    this.node.connect(this.context.destination); //this should not be necessary
+    source.connect(this.node)
+    this.node.connect(this.context.destination) // this should not be necessary
 
-    let self = {};
+    const self = {}
+
     this.worker = new InlineWorker(function () {
-      let recLength = 0,
-        recBuffers = [],
-        sampleRate,
-        numChannels;
+      let recLength = 0
+      let recBuffers = []
+      let sampleRate
+      let numChannels
 
       this.onmessage = function (e) {
+        // eslint-disable-next-line default-case
         switch (e.data.command) {
           case 'init':
-            init(e.data.config);
-            break;
-          case 'record':
-            record(e.data.buffer);
-            break;
-          case 'getBuffer':
-            getBuffer();
-            break;
-          case 'clear':
-            clear();
-            break;
-        }
-      };
+            init(e.data.config)
+            break
 
-      let newSampleRate;
+          case 'record':
+            record(e.data.buffer)
+            break
+
+          case 'getBuffer':
+            getBuffer()
+            break
+
+          case 'clear':
+            clear()
+            break
+        }
+      }
+
+      let newSampleRate
 
       function init(config) {
-        sampleRate = config.sampleRate;
-        numChannels = config.numChannels;
-        initBuffers();
+        sampleRate = config.sampleRate
+        numChannels = config.numChannels
+        initBuffers()
 
         if (sampleRate > 48000) {
-          newSampleRate = 48000;
+          newSampleRate = 48000
         } else {
-          newSampleRate = sampleRate;
+          // eslint-disable-next-line no-unused-vars
+          newSampleRate = sampleRate
         }
       }
 
       function record(inputBuffer) {
-        for (var channel = 0; channel < numChannels; channel++) {
-          recBuffers[channel].push(inputBuffer[channel]);
+        for (let channel = 0; channel < numChannels; channel++) {
+          recBuffers[channel].push(inputBuffer[channel])
         }
-        recLength += inputBuffer[0].length;
+
+        recLength += inputBuffer[0].length
       }
 
       function getBuffer() {
-        let buffers = [];
+        const buffers = []
+
         for (let channel = 0; channel < numChannels; channel++) {
-          buffers.push(mergeBuffers(recBuffers[channel], recLength));
+          buffers.push(mergeBuffers(recBuffers[channel], recLength))
         }
-        this.postMessage({ command: 'getBuffer', data: buffers });
+
+        this.postMessage({ command: 'getBuffer', data: buffers })
       }
 
       function clear() {
-        recLength = 0;
-        recBuffers = [];
-        initBuffers();
+        recLength = 0
+        recBuffers = []
+        initBuffers()
       }
 
       function initBuffers() {
         for (let channel = 0; channel < numChannels; channel++) {
-          recBuffers[channel] = [];
+          recBuffers[channel] = []
         }
       }
 
+      // eslint-disable-next-line no-shadow
       function mergeBuffers(recBuffers, recLength) {
-        let result = new Float32Array(recLength);
-        let offset = 0;
+        const result = new Float32Array(recLength)
+        let offset = 0
+
         for (let i = 0; i < recBuffers.length; i++) {
-          result.set(recBuffers[i], offset);
-          offset += recBuffers[i].length;
+          result.set(recBuffers[i], offset)
+          offset += recBuffers[i].length
         }
-        return result;
+
+        return result
       }
-    }, self);
+    }, self)
 
     this.worker.postMessage({
       command: 'init',
       config: {
         sampleRate: this.context.sampleRate,
-        numChannels: this.config.numChannels
-      }
-    });
+        numChannels: this.config.numChannels,
+      },
+    })
 
     this.worker.onmessage = (e) => {
-      let cb = this.callbacks[e.data.command].pop();
-      if (typeof cb == 'function') {
-        cb(e.data.data);
+      const cb = this.callbacks[e.data.command].pop()
+
+      if (typeof cb === 'function') {
+        cb(e.data.data)
       }
-    };
+    }
   }
 
   record() {
-    this.recording = true;
+    this.recording = true
   }
 
   stop() {
-    this.recording = false;
+    this.recording = false
   }
 
   clear() {
-    this.worker.postMessage({ command: 'clear' });
+    this.worker.postMessage({ command: 'clear' })
   }
 
   getBuffer(cb) {
-    cb = cb || this.config.callback;
-    if (!cb) throw new Error('Callback not set');
+    cb = cb || this.config.callback
+    if (!cb) throw new Error('Callback not set')
 
-    this.callbacks.getBuffer.push(cb);
+    this.callbacks.getBuffer.push(cb)
 
-    this.worker.postMessage({ command: 'getBuffer' });
+    this.worker.postMessage({ command: 'getBuffer' })
   }
 }
 
-export default Recorder;
+export default Recorder
