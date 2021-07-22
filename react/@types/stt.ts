@@ -20,7 +20,3 @@ export interface StartRecording {
   errHandler: any
   onStreamLoad?: any
 }
-export interface StopRecording {
-  exportWAV: any
-  wavCallback: any
-}

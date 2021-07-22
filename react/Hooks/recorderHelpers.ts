@@ -1,5 +1,5 @@
 import Recorder from './recorder'
-import { StartRecording, StopRecording } from '../@types/stt'
+import { StartRecording } from '../@types/stt'
 
 let microphoneStream: any // stream from getUserMedia()
 let rec: any = Recorder // Recorder.js object
@@ -48,7 +48,7 @@ export async function startRecording({
   }
 }
 
-export function stopRecording() {
+export function stopRecording(): void {
   // stop recorder.js recording
   rec.stop()
 
