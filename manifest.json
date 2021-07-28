@@ -1,7 +1,7 @@
 {
   "vendor": "vtexarg",
   "name": "speech-to-text",
-  "version": "0.0.2-beta.0",
+  "version": "0.0.2",
   "title": "Speech to text component",
   "description": "STT component using google chrome web API",
   "builders": {
