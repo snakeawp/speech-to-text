@@ -53,8 +53,12 @@ export default function Speech({
     return ev
   }
 
+  const handleRecording = () => {
+    isRecording ? stopSpeechToText() : startSpeechToText()
+  }
+
   useEffect(() => {
-    setLine(results[0] || '')
+    setLine(results[results.length - 1] || '')
   }, [results])
 
   useEffect(() => {
@@ -67,7 +71,7 @@ export default function Speech({
   return (
     <div
       className={`${handles.audioSearchContainer} t-heading-2 c-muted-1 db tc`}
-      onClick={isRecording ? stopSpeechToText : startSpeechToText}
+      onClick={() => handleRecording()}
       onKeyPress={handleKeyPress}
       role="button"
       tabIndex={0}
