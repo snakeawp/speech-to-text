@@ -11,8 +11,6 @@
 This app **uses Google Chrome language processing** to listen with the microphone and return as a result a word. With that **result** the component redirects to the search page using it as a parameter.
 Under the app's name, you should explain the topic, giving a **brief description** of its **functionality** in a store when installed.
 
-Next, **add media** (either an image of a GIF) with the rendered components, so that users can better understand how the app works in practice. 
-
 ![speechlow](https://user-images.githubusercontent.com/23383993/127346535-62a7546b-accd-468b-adfa-3495cabe64b9.gif)
 
 ## Configuration 
