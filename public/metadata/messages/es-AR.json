@@ -1,0 +1,11 @@
+{
+  "name": "Speech to text Search",
+  "headline": "Busque dentro de la tienda usando el micrófono y Google Chrome NLP.",
+  "overview": "Impulse su comercio ofreciendo una búsqueda rápida de voz utilizando el sistema Google Chrome NLP.",
+  "features": ["Buscar en google chrome usando el micrófono"],
+  "websiteURL": "<https://help.vtex.com/>",
+  "support": {
+    "email": "help@vtex.com",
+    "url": "https://help.vtex.com/"
+  }
+}

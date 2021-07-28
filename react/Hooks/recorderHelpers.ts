@@ -40,8 +40,6 @@ export async function startRecording({
 
     return stream
   } catch (err) {
-    // console.log(err)
-
     if (errHandler) {
       errHandler()
     }
