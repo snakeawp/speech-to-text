@@ -13,8 +13,7 @@ Under the app's name, you should explain the topic, giving a **brief description
 
 Next, **add media** (either an image of a GIF) with the rendered components, so that users can better understand how the app works in practice. 
 
-
-![Media Placeholder](https://user-images.githubusercontent.com/52087100/71204177-42ca4f80-227e-11ea-89e6-e92e65370c69.png)
+![speechlow](https://user-images.githubusercontent.com/23383993/127346535-62a7546b-accd-468b-adfa-3495cabe64b9.gif)
 
 ## Configuration 
 
