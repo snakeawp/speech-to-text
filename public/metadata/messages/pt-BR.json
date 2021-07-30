@@ -3,7 +3,7 @@
   "headline": "Pesquise dentro da loja usando o microfone e o Google Chrome NLP.",
   "overview": "Aumente o seu comércio oferecendo pesquisa rápida por fala usando o sistema PNL do Google Chrome.",
   "features": ["Pesquise usando o microfone"],
-  "websiteURL": "<https://help.vtex.com/>",
+  "websiteURL": "https://help.vtex.com/",
   "support": {
     "email": "help@vtex.com",
     "url": "https://help.vtex.com/"
