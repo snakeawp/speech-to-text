@@ -8,25 +8,12 @@ import { startRecording, stopRecording } from './recorderHelpers'
 import { UseSpeechToTextTypes } from '../@types/stt'
 import { is_constructor } from '../utils'
 
-// const isEdgeChromium = navigator?.userAgent?.indexOf('Edg/') !== -1 || false;
-
 const AudioContext = window.AudioContext || (window as any).webkitAudioContext
 
 const SpeechRecognition =
   window.SpeechRecognition || (window as any).webkitSpeechRecognition
 
 let recognition: SpeechRecognition | null
-
-// Set recognition back to null for brave browser due to promise resolving
-// after the conditional on line 31
-// Brave unsupported for know
-// if (navigator) {
-//   if ((navigator as BraveNavigator).brave) {
-//     (navigator as BraveNavigator).brave.isBrave().then((bool: boolean) => {
-//       if (bool) recognition = null;
-//     });
-//   }
-// }
 
 // Chromium browsers will have the SpeechRecognition method
 // but do not implement the functionality due to google wanting 💰

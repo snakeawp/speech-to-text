@@ -5,10 +5,7 @@ declare module 'hark' {
   export default hark
 }
 
-declare function hark(
-  stream: MediaStream | undefined,
-  option?: hark.Option
-): hark.Harker
+declare function hark(stream?: MediaStream, option?: hark.Option): hark.Harker
 
 declare namespace hark {
   interface Option {
