@@ -1,8 +1,8 @@
 {
   "name": "Speech to text Search",
-  "headline": "Pesquise dentro da loja usando o microfone e o Google Chrome NLP.",
+  "headline": "Integre a pesquisa Speech-to-text dentro de sua loja usando o microfone e o PNL do Google Chrome",
   "overview": "Aumente o seu comércio oferecendo pesquisa rápida por fala usando o sistema PNL do Google Chrome.",
-  "features": ["Pesquise usando o microfone"],
+  "features": ["Pesquise no Google Chrome usando o microfone"],
   "websiteURL": "https://help.vtex.com/",
   "support": {
     "email": "help@vtex.com",
