@@ -9,7 +9,6 @@
 <!-- DOCS-IGNORE:end -->
 
 This app **uses Google Chrome language processing** to listen with the microphone and return as a result a word. With that **result** the component redirects to the search page using it as a parameter.
-Under the app's name, you should explain the topic, giving a **brief description** of its **functionality** in a store when installed.
 
 ![speechlow](https://user-images.githubusercontent.com/23383993/127346535-62a7546b-accd-468b-adfa-3495cabe64b9.gif)
 
@@ -39,10 +38,6 @@ And then add the needed configuration:
   }
 ```
 
-Next, add the **props table** containing your block's props. 
-
-If the app exports more than one block, create several tables - one for each block. For example:
-
 ### `speech-to-text` props
 
 | Prop name    | Type            | Description    | Default value                                                                                                                               |
@@ -52,8 +47,6 @@ If the app exports more than one block, create several tables - one for each blo
 | `iconWidth`      | `string`       | Defines the icon width in px         | `20px`        |
 | `imgSrc`      | `string`       | Defines the link to the image to be shown         | `none`        |
 
-
-Remember to also use this Configuration section to  **showcase any necessary disclaimer** related to the app and its blocks, such as the different behavior it may display during its configuration. 
 
 #
 ## Customization
