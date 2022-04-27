@@ -80,7 +80,7 @@ export default function Speech({
         data-recording={isRecording}
         src={`${imgSrc}`}
         alt="recorder-img"
-        className={`${handles.audioSearchImgRecordingState} ${
+        className={`${handles.audioSearchImg} ${
           isRecording ? handles.audioSearchImgRecordingState : ''
         } pa2 pointer`}
         style={{
