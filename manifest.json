@@ -15,7 +15,9 @@
       "email": "help@vtex.com"
     },
     "type": "free",
-    "availableCountries": ["*"]
+    "availableCountries": [
+      "*"
+    ]
   },
   "dependencies": {
     "vtex.styleguide": "9.x",
